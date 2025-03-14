@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Portal</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Login and Registration Pages */
+        .auth-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #007bff;
+        }
+
+        .auth-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .auth-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .auth-form button:hover {
+            background-color: #0056b3;
+        }
+
+        .toggle-auth {
+            margin-top: 10px;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none; /* Hidden by default, shown after login */
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #fff;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        .sidebar a:hover {
+            background-color: #007bff;
+        }
+
+        .main-content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+
+        /* Sections */
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            margin-top: 0;
+        }
+
+        .section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .section ul li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .section ul li:last-child {
+            border-bottom: none;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        /* E-Ticketing Section */
+        .ticket {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .ticket h3 {
+            margin-top: 0;
+        }
+
+        .ticket button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="auth-page" id="loginPage">
+        <div class="auth-form">
+            <h1>Employee Login</h1>
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button onclick="login()">Login</button>
+            <p class="toggle-auth">Don't have an account? <a href="#" onclick="showRegister()">Register here</a></p>
+        </div>
+    </div>
+
+    <!-- Registration Page -->
+    <div class="auth-page" id="registerPage" style="display: none;">
+        <div class="auth-form">
+            <h1>Employee Registration</h1>
+            <input type="text" id="regName" placeholder="Full Name" required>
+            <input type="email" id="regEmail" placeholder="Email" required>
+            <input type="text" id="regUsername" placeholder="Username" required>
+            <input type="password" id="regPassword" placeholder="Password" required>
+            <button onclick="register()">Register</button>
+            <p class="toggle-auth">Already have an account? <a href="#" onclick="showLogin()">Login here</a></p>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Menu</h2>
+            <a href="#payslips">Payslips</a>
+            <a href="#announcements">Announcements</a>
+            <a href="#requests">Request Services</a>
+            <a href="#complaints">Complaints</a>
+            <a href="#ticketing">E-Ticketing</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Payslips Section -->
+            <div id="payslips" class="section">
+                <h2>Payslips</h2>
+                <ul>
+                    <li><a href="#">Payslip - January 2023</a></li>
+                    <li><a href="#">Payslip - February 2023</a></li>
+                    <li><a href="#">Payslip - March 2023</a></li>
+                </ul>
+            </div>
+
+            <!-- Announcements Section -->
+            <div id="announcements" class="section">
+                <h2>Announcements</h2>
+                <ul>
+                    <li>Company Holiday on 25th December</li>
+                    <li>New HR Policies Effective from 1st January</li>
+                    <li>Annual Party on 31st December</li>
+                </ul>
+            </div>
+
+            <!-- Request Services Section -->
+            <div id="requests" class="section">
+                <h2>Request Services</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="service">Service Type</label>
+                        <select id="service">
+                            <option>IT Support</option>
+                            <option>HR Assistance</option>
+                            <option>Facility Management</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" rows="5" required></textarea>
+                    </div>
+                    <button type="submit">Submit Request</button>
+                </form>
+            </div>
+
+            <!-- Complaints Section -->
+            <div id="complaints" class="section">
+                <h2>Complaints</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="complaint">Complaint Details</label>
+                        <textarea id="complaint" rows="5" required></textarea>
+                    </div>
+                    <button type="submit">Submit Complaint</button>
+                </form>
+            </div>
+
+            <!-- E-Ticketing Section -->
+            <div id="ticketing" class="section">
+                <h2>E-Ticketing</h2>
+                <form id="ticketForm">
+                    <div class="form-group">
+                        <label for="ticketType">Ticket Type</label>
+                        <select id="ticketType" required>
+                            <option value="event">Event Ticket</option>
+                            <option value="travel">Travel Ticket</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ticketDetails">Details</label>
+                        <textarea id="ticketDetails" rows="5" required></textarea>
+                    </div>
+                    <button type="submit">Request Ticket</button>
+                </form>
+
+                <!-- Display Requested Tickets -->
+                <div id="ticketList">
+                    <h3>Your Tickets</h3>
+                    <div id="tickets"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulate User Database
+        let users = [];
+        let tickets = [];
+
+        // Show Registration Page
+        function showRegister() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('registerPage').style.display = 'flex';
+        }
+
+        // Show Login Page
+        function showLogin() {
+            document.getElementById('registerPage').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+        }
+
+        // Register New Employee
+        function register() {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+
+            // Add user to the database
+            users.push({ name, email, username, password });
+            alert('Registration successful! Please login.');
+            showLogin();
+        }
+
+        // Login Employee
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Check if user exists
+            const user = users.find(u => u.username === username && u.password === password);
+            if (user) {
+                document.getElementById('loginPage').style.display = 'none';
+                document.querySelector('.dashboard').style.display = 'block';
+            } else {
+                alert('Invalid username or password');
+            }
+        }
+
+        // Logout Employee
+        function logout() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.querySelector('.dashboard').style.display = 'none';
+        }
+
+        // E-Ticketing Form Submission
+        document.getElementById('ticketForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const ticketType = document.getElementById('ticketType').value;
+            const ticketDetails = document.getElementById('ticketDetails').value;
+
+            // Generate a ticket
+            const ticket = {
+                id: tickets.length + 1,
+                type: ticketType,
+                details: ticketDetails,
+                status: 'Pending'
+            };
+
+            // Add ticket to the list
+            tickets.push(ticket);
+            displayTickets();
+
+            // Clear the form
+            document.getElementById('ticketForm').reset();
+        });
+
+        // Display Tickets
+        function displayTickets() {
+            const ticketList = document.getElementById('tickets');
+            ticketList.innerHTML = '';
+
+            tickets.forEach(ticket => {
+                const ticketDiv = document.createElement('div');
+                ticketDiv.className = 'ticket';
+                ticketDiv.innerHTML = `
+                    <h3>Ticket #${ticket.id} - ${ticket.type}</h3>
+                    <p><strong>Details:</strong> ${ticket.details}</p>
+                    <p><strong>Status:</strong> ${ticket.status}</p>
+                    <button onclick="downloadTicket(${ticket.id})">Download Ticket</button>
+                `;
+                ticketList.appendChild(ticketDiv);
+            });
+        }
+
+        // Simulate Ticket Download
+        function downloadTicket(ticketId) {
+            const ticket = tickets.find(t => t.id === ticketId);
+            if (ticket) {
+                alert(`Downloading Ticket #${ticket.id} - ${ticket.type}`);
+                // Simulate download (replace with actual file download logic)
+            }
+        }
+    </script>
+</body>
+</html>
